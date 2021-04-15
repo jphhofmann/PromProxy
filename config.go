@@ -8,10 +8,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type whitelist struct {
-	IPAddr string `yaml:"ipaddr"`
-}
-
 type routes struct {
 	Location string `yaml:"location"`
 	Target   string `yaml:"target"`
