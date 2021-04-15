@@ -1,0 +1,11 @@
+listen: '0.0.0.0:10000'
+debug: false
+
+routes:
+  node-exporter:
+    location: 'node-exporter'
+    target: '127.0.0.1:9100'
+    path: '/metrics'
+
+whitelist:
+  - '127.0.0.1'
