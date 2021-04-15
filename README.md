@@ -32,7 +32,7 @@ Please see go.mod. However, notable external dependencies are:
 
 #### Why fasthttp and not net/http?
 
-I'm using fasthttp for several projects at [combahton](https://www.combahton.net. It's not about performance, rather about standardization.
+I'm using fasthttp for several projects at [combahton](https://www.combahton.net). It's not about performance, rather about standardization.
 
 ### Building
 
