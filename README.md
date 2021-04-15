@@ -26,7 +26,7 @@ This is currently a PoC I have quickly written on a cold April evening, while be
 Please see go.mod. However, notable external dependencies are:
 
 - [logrus](https://github.com/sirupsen/logrus)
-- [fastthtp](https://github.com/valyala/fasthttp)
+- [fasthttp](https://github.com/valyala/fasthttp)
 - [fasthttp-router](https://github.com/fasthttp/router)
 - [fasthttp-reverse-proxy](https://github.com/yeqown/fasthttp-reverse-proxy)
 
