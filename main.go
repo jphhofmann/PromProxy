@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/fasthttp/router"
 	log "github.com/sirupsen/logrus"
 	"github.com/valyala/fasthttp"
@@ -14,8 +12,8 @@ func handleRequests() {
 
 	r.GET("/", routesRoot)
 
-	for _, route := range Cfg.Routes {
-		r.GET(fmt.Sprintf("/%s", route.Location), routesProxy)
+	for path, _ := range Cfg.Routes {
+		r.GET("/"+path, routesProxy)
 	}
 
 	log.Infof("Listening on %v", Cfg.Listen)

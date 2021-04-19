@@ -9,9 +9,8 @@ import (
 )
 
 type routes struct {
-	Location string `yaml:"location"`
-	Target   string `yaml:"target"`
-	Path     string `yaml:"path"`
+	Target string `yaml:"target"`
+	Path   string `yaml:"path"`
 }
 
 type config struct {

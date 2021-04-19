@@ -3,7 +3,6 @@ debug: false
 
 routes:
   node-exporter:
-    location: 'node-exporter'
     target: '127.0.0.1:9100'
     path: '/metrics'
 
