@@ -1,0 +1,13 @@
+[Unit]
+Description=promproxy
+
+[Service]
+Type=simple
+User=nobody
+Group=nogroup
+ExecStart=/usr/bin/promproxy
+Restart=on-failure
+RestartSec=5s
+
+[Install]                                                                                                                                                                               
+WantedBy=multi-user.target
