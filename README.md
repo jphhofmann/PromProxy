@@ -47,7 +47,7 @@ I'm using fasthttp for several projects at [combahton](https://www.combahton.net
 
 Afterwards build the package:
 
-```cd promproxy && go build```
+```cd PromProxy && go build```
 
 A new binary named "promproxy" appears. Just move the binary to /usr/bin/promproxy. Afterwards, you can register a systemd service, see the promproxy.service unit file.
 
