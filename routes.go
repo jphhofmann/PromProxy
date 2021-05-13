@@ -19,6 +19,7 @@ func routesRoot(ctx *fasthttp.RequestCtx) {
 func proxyRespond(ctx *fasthttp.RequestCtx) bool {
 	ipAddr, _, err := net.SplitHostPort(ctx.RemoteAddr().String())
 	if err != nil {
+		log.Errorf("Failed to split client ip-address, %v", err)
 		ctx.SetStatusCode(500)
 	} else {
 		for _, ip := range Cfg.Whitelist {
@@ -32,9 +33,10 @@ func proxyRespond(ctx *fasthttp.RequestCtx) bool {
 					}
 					proxyServer := proxy.NewReverseProxy(config.Target)
 					proxyServer.ServeHTTP(ctx)
+					proxyServer.Close()
 					return true
 				} else {
-					ctx.SetStatusCode(500)
+					ctx.SetStatusCode(404)
 					fmt.Fprintf(ctx, "Failed to find route")
 					return true
 				}
