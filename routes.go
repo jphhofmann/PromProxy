@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/valyala/fasthttp"
-	proxy "github.com/yeqown/fasthttp-reverse-proxy"
 )
 
 /* Display root route */
 func routesRoot(ctx *fasthttp.RequestCtx) {
-	fmt.Fprintf(ctx, "promproxy service ready.")
+	fmt.Fprintf(ctx, "PromProxy service ready.")
 }
 
 /* Respond with proxied content */
@@ -25,21 +25,25 @@ func proxyRespond(ctx *fasthttp.RequestCtx) bool {
 		for _, ip := range Cfg.Whitelist {
 			if ip == ipAddr {
 				path := strings.SplitAfter(string(ctx.URI().Path()), "/")[1]
-				config := Cfg.Routes[path]
-				if len(config.Target) != 0 {
-					ctx.Request.SetRequestURI(config.Path)
-					if !Cfg.Debug {
-						proxy.SetProduction()
-					}
-					proxyServer := proxy.NewReverseProxy(config.Target)
-					proxyServer.ServeHTTP(ctx)
-					proxyServer.Close()
-					return true
-				} else {
-					ctx.SetStatusCode(404)
-					fmt.Fprintf(ctx, "Failed to find route")
-					return true
+				ctx.Request.SetRequestURI(Cfg.Routes[path].Path)
+				var proxyClient = &fasthttp.HostClient{
+					Addr:          Cfg.Routes[path].Target,
+					ReadTimeout:   30 * time.Second,
+					WriteTimeout:  30 * time.Second,
+					DialDualStack: true,
+					IsTLS:         false,
 				}
+				req := &ctx.Request
+				resp := &ctx.Response
+				req.Header.Del("Connection")
+				resp.Header.SetServer("PromProxy")
+				if err := proxyClient.Do(req, resp); err != nil {
+					ctx.SetStatusCode(fasthttp.StatusBadGateway)
+					if Cfg.Debug {
+						log.Errorf("Failed to contact exporter %v on %v, %v", path, Cfg.Routes[path].Path, err)
+					}
+				}
+				return true
 			}
 		}
 	}

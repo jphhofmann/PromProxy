@@ -23,6 +23,6 @@ func handleRequests() {
 
 func main() {
 	configLoad()
-	log.Info("Started promproxy")
+	log.Info("Started PromProxy")
 	handleRequests()
 }
